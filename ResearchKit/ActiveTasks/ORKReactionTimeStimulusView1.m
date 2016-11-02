@@ -29,10 +29,10 @@
  */
 
 
-#import "ORKReactionTimeStimulusView.h"
+#import "ORKReactionTimeStimulusView1.h"
 
 
-@implementation ORKReactionTimeStimulusView {
+@implementation ORKReactionTimeStimulusView1 {
     CAShapeLayer *_tickLayer;
     CAShapeLayer *_crossLayer;
 }
@@ -42,7 +42,7 @@ static const CGFloat RoundReactionTimeViewDiameter = 122;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.layer.cornerRadius = RoundReactionTimeViewDiameter * 0.5;
+        self.layer.cornerRadius = RoundReactionTimeViewDiameter * 0;
     }
     return self;
 }
@@ -56,7 +56,7 @@ static const CGFloat RoundReactionTimeViewDiameter = 122;
     [_crossLayer removeFromSuperlayer];
     _tickLayer = nil;
     _crossLayer = nil;
-    self.layer.backgroundColor = self.tintColor.CGColor;
+    self.layer.backgroundColor = [UIColor blackColor].CGColor;
 }
 
 - (void)startSuccessAnimationWithDuration:(NSTimeInterval)duration completion:(void(^)(void))completion {

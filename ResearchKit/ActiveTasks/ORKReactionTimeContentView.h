@@ -37,6 +37,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ORKReactionTimeContentView : ORKActiveStepCustomView
 
+{
+    NSNumber *index;
+    
+}
+
+
 - (void)setStimulusHidden:(BOOL)hidden;
 
 - (void)startSuccessAnimationWithDuration:(NSTimeInterval)duration completion:(nullable void (^)(void))completion;

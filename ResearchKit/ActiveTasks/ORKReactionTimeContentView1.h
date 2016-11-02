@@ -30,18 +30,21 @@
 
 
 @import UIKit;
-#import "ORKDefines.h"
-#import "ORKActiveStepViewController.h"
+#import "ORKCustomStepView_Internal.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-ORK_CLASS_AVAILABLE
-@interface ORKReactionTimeViewController : ORKActiveStepViewController
-{
-    NSNumber *index;
-    
-}
+@interface ORKReactionTimeContentView1 : ORKActiveStepCustomView
+
+- (void)setStimulusHidden:(BOOL)hidden;
+
+- (void)startSuccessAnimationWithDuration:(NSTimeInterval)duration completion:(nullable void (^)(void))completion;
+
+- (void)startFailureAnimationWithDuration:(NSTimeInterval)duration completion:(nullable void (^)(void))completion;
+
+- (void)resetAfterDelay:(NSTimeInterval)delay completion:(nullable void (^)(void))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END
