@@ -26,7 +26,7 @@
  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+*/
 
 
 #import "ORKReactionTimeStep.h"
@@ -108,14 +108,14 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [super encodeWithCoder:aCoder];
-    ORK_ENCODE_DOUBLE(aCoder, maximumStimulusInterval);
-    ORK_ENCODE_DOUBLE(aCoder, minimumStimulusInterval);
-    ORK_ENCODE_DOUBLE(aCoder, thresholdAcceleration);
-    ORK_ENCODE_DOUBLE(aCoder, timeout);
-    ORK_ENCODE_UINT32(aCoder, successSound);
-    ORK_ENCODE_UINT32(aCoder, timeoutSound);
-    ORK_ENCODE_UINT32(aCoder, failureSound);
-    ORK_ENCODE_INTEGER(aCoder, numberOfAttempts);
+        ORK_ENCODE_DOUBLE(aCoder, maximumStimulusInterval);
+        ORK_ENCODE_DOUBLE(aCoder, minimumStimulusInterval);
+        ORK_ENCODE_DOUBLE(aCoder, thresholdAcceleration);
+        ORK_ENCODE_DOUBLE(aCoder, timeout);
+        ORK_ENCODE_UINT32(aCoder, successSound);
+        ORK_ENCODE_UINT32(aCoder, timeoutSound);
+        ORK_ENCODE_UINT32(aCoder, failureSound);
+        ORK_ENCODE_INTEGER(aCoder, numberOfAttempts);
 }
 
 + (BOOL)supportsSecureCoding {
