@@ -38,7 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 ORK_CLASS_AVAILABLE
 @interface ORKReactionTimeViewController : ORKActiveStepViewController
-
+{
+    NSNumber *index;
+    
+}
 @end
 
 NS_ASSUME_NONNULL_END

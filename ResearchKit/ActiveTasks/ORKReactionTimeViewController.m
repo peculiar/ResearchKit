@@ -33,6 +33,7 @@
 
 #import "ORKActiveStepView.h"
 #import "ORKReactionTimeContentView.h"
+#import "ORKReactionTimeContentView1.h"
 
 #import "ORKActiveStepViewController_Internal.h"
 
@@ -47,6 +48,7 @@
 
 @implementation ORKReactionTimeViewController {
     ORKReactionTimeContentView *_reactionTimeContentView;
+    ORKReactionTimeContentView1 *_reactionTimeContentView1;
     NSMutableArray *_results;
     NSTimer *_stimulusTimer;
     NSTimer *_timeoutTimer;
@@ -63,16 +65,44 @@ static const NSTimeInterval OutcomeAnimationDuration = 0.3;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self configureTitle];
-    _results = [NSMutableArray new];
-
-    NSArray<UIColor*>* colors = @[UIColor.blueColor, UIColor.orangeColor, UIColor.greenColor];
-    _reactionTimeContentView = [[ORKReactionTimeContentView alloc] initWithColors:colors];
     
-    self.activeStepView.activeCustomView = _reactionTimeContentView;
-    self.activeStepView.stepViewFillsAvailableSpace = YES;
-    [_reactionTimeContentView setStimulusHidden:YES];
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    index = [NSNumber numberWithInt:arc4random_uniform(2)];
+    switch ([index intValue]) {
+        case 0:
+            [self configureTitle];
+            _results = [NSMutableArray new];
+            _reactionTimeContentView1 = [ORKReactionTimeContentView1 new];
+            self.activeStepView.activeCustomView = _reactionTimeContentView1;
+            self.activeStepView.stepViewFillsAvailableSpace = YES;
+            [_reactionTimeContentView1 setStimulusHidden:YES];
+            break;
+            
+        case 1:
+            [self configureTitle];
+            _results = [NSMutableArray new];
+            _reactionTimeContentView = [ORKReactionTimeContentView new];
+            self.activeStepView.activeCustomView = _reactionTimeContentView;
+            self.activeStepView.stepViewFillsAvailableSpace = YES;
+            [_reactionTimeContentView setStimulusHidden:YES];
+            break;
+            
+        case 2:
+            [self configureTitle];
+            _results = [NSMutableArray new];
+            _reactionTimeContentView = [ORKReactionTimeContentView new];
+            self.activeStepView.activeCustomView = _reactionTimeContentView;
+            self.activeStepView.stepViewFillsAvailableSpace = YES;
+            [_reactionTimeContentView setStimulusHidden:YES];
+            break;
+    }
+}
+
+
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -90,7 +120,7 @@ static const NSTimeInterval OutcomeAnimationDuration = 0.3;
 - (void)start {
     [super start];
     [self startStimulusTimer];
-
+    
 }
 
 #if TARGET_IPHONE_SIMULATOR
@@ -180,6 +210,7 @@ static const NSTimeInterval OutcomeAnimationDuration = 0.3;
 
 - (void)indicateSuccess:(void(^)(void))completion {
     [_reactionTimeContentView startSuccessAnimationWithDuration:OutcomeAnimationDuration completion:completion];
+    [_reactionTimeContentView1 startSuccessAnimationWithDuration:OutcomeAnimationDuration completion:completion];
     AudioServicesPlaySystemSound([self reactionTimeStep].successSound);
 }
 
@@ -188,6 +219,7 @@ static const NSTimeInterval OutcomeAnimationDuration = 0.3;
         return;
     }
     [_reactionTimeContentView startFailureAnimationWithDuration:OutcomeAnimationDuration completion:completion];
+    [_reactionTimeContentView1 startFailureAnimationWithDuration:OutcomeAnimationDuration completion:completion];
     SystemSoundID sound = _timedOut ? [self reactionTimeStep].timeoutSound : [self reactionTimeStep].failureSound;
     AudioServicesPlayAlertSound(sound);
 }
@@ -196,9 +228,13 @@ static const NSTimeInterval OutcomeAnimationDuration = 0.3;
     ORKWeakTypeOf(self) weakSelf = self;
     [_reactionTimeContentView resetAfterDelay:delay completion:^{
         [weakSelf configureTitle];
-        [_reactionTimeContentView changeColor];
         [weakSelf start];
     }];
+    [_reactionTimeContentView1 resetAfterDelay:delay completion:^{
+        [weakSelf configureTitle];
+        [weakSelf start];
+    }];
+    
 }
 
 - (void)startStimulusTimer {
@@ -208,6 +244,7 @@ static const NSTimeInterval OutcomeAnimationDuration = 0.3;
 - (void)stimulusTimerDidFire {
     _stimulusTimestamp = [NSProcessInfo processInfo].systemUptime;
     [_reactionTimeContentView setStimulusHidden:NO];
+    [_reactionTimeContentView1 setStimulusHidden:NO];
     _validResult = YES;
     [self startTimeoutTimer];
 }
