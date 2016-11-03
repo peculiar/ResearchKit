@@ -36,9 +36,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ORKReactionTimeStimulusView : UIView
-- (instancetype)initWithBackgroundColor:(UIColor*)color;
-//- (void)reset;
-- (void)setColor:(UIColor *)color;
+
+- (void)reset;
 
 - (void)startSuccessAnimationWithDuration:(NSTimeInterval)duration completion:(nullable void(^)(void))completion;
 
