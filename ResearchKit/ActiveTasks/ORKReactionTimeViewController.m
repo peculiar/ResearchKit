@@ -54,6 +54,8 @@
     BOOL _validResult;
     BOOL _timedOut;
     BOOL _shouldIndicateFailure;
+    BOOL _blackCircle;
+    UIColor *currentColor;
 }
 
 static const NSTimeInterval OutcomeAnimationDuration = 0.3;
@@ -66,8 +68,12 @@ static const NSTimeInterval OutcomeAnimationDuration = 0.3;
     [self configureTitle];
     _results = [NSMutableArray new];
 
-    NSArray<UIColor*>* colors = @[UIColor.blueColor, UIColor.orangeColor, UIColor.greenColor];
+    NSArray<UIColor*>* colors = @[self.view.tintColor, self.view.tintColor, self.view.tintColor, self.view.tintColor, self.view.tintColor, UIColor.blackColor];
     _reactionTimeContentView = [[ORKReactionTimeContentView alloc] initWithColors:colors];
+
+    if (currentColor == UIColor.blackColor) {
+        _blackCircle = YES;
+    }
     
     self.activeStepView.activeCustomView = _reactionTimeContentView;
     self.activeStepView.stepViewFillsAvailableSpace = YES;
@@ -95,15 +101,21 @@ static const NSTimeInterval OutcomeAnimationDuration = 0.3;
 
 #if TARGET_IPHONE_SIMULATOR
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    if (event.type == UIEventSubtypeMotionShake) {
-        if (_validResult) {
-            ORKReactionTimeResult *reactionTimeResult = [[ORKReactionTimeResult alloc] initWithIdentifier:self.step.identifier];
-            reactionTimeResult.timestamp = _stimulusTimestamp;
-            [_results addObject:reactionTimeResult];
+    if (!_blackCircle) {
+        if (event.type == UIEventSubtypeMotionShake) {
+            if (_validResult) {
+                ORKReactionTimeResult *reactionTimeResult = [[ORKReactionTimeResult alloc] initWithIdentifier:self.step.identifier];
+                reactionTimeResult.timestamp = _stimulusTimestamp;
+                [_results addObject:reactionTimeResult];
+            }
+            [self attemptDidFinish];
         }
-        [self attemptDidFinish];
+    }
+    else {
+        
     }
 }
+
 #endif
 
 
