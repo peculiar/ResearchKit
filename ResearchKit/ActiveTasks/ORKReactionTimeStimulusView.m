@@ -35,16 +35,22 @@
 @implementation ORKReactionTimeStimulusView {
     CAShapeLayer *_tickLayer;
     CAShapeLayer *_crossLayer;
+    UIColor* _backgroundColor;
 }
 
 static const CGFloat RoundReactionTimeViewDiameter = 122;
 
-- (instancetype)init {
+- (instancetype)initWithBackgroundColor:(UIColor*)color {
     self = [super init];
     if (self) {
         self.layer.cornerRadius = RoundReactionTimeViewDiameter * 0.5;
+        _backgroundColor = color;
     }
     return self;
+}
+
+- (instancetype)init {
+    return [self initWithBackgroundColor:self.tintColor];
 }
 
 - (CGSize)intrinsicContentSize {
@@ -56,7 +62,12 @@ static const CGFloat RoundReactionTimeViewDiameter = 122;
     [_crossLayer removeFromSuperlayer];
     _tickLayer = nil;
     _crossLayer = nil;
-    self.layer.backgroundColor = self.tintColor.CGColor;
+    self.layer.backgroundColor = _backgroundColor.CGColor;
+}
+
+- (void)setColor:(UIColor *)color {
+    _backgroundColor = color;
+    [self reset];
 }
 
 - (void)startSuccessAnimationWithDuration:(NSTimeInterval)duration completion:(void(^)(void))completion {
@@ -84,7 +95,7 @@ static const CGFloat RoundReactionTimeViewDiameter = 122;
 
 - (void)startFailureAnimationWithDuration:(NSTimeInterval)duration completion:(void(^)(void))completion {
     self.hidden = NO;
-    
+
     self.layer.backgroundColor = [UIColor clearColor].CGColor;
     [self addCrossLayer];
     [CATransaction begin];
