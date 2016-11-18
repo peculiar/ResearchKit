@@ -37,12 +37,27 @@
 
 @implementation ORKReactionTimeContentView {
     ORKReactionTimeStimulusView *_stimulusView;
+    NSUInteger _colorIndex;
+    NSArray<UIColor*>* _stimulusColors;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        //[self addStimulusView];
+    }
+    return self;
+}
+
+- (instancetype)initWithColors:(NSArray<UIColor*>*)colors {
+    self = [super init];
+    if (self) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        _stimulusColors = colors;
+        [self changeColor];
+        
         [self addStimulusView];
     }
     return self;
@@ -59,6 +74,8 @@
 - (void)resetAfterDelay:(NSTimeInterval)delay completion:(nullable void (^)(void))completion {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         _stimulusView.hidden = YES;
+        [_stimulusView setColor:self.currentColor];
+        
         if (completion) {
             completion();
         }
@@ -67,9 +84,9 @@
 
 - (void)addStimulusView {
     if (!_stimulusView) {
-        _stimulusView = [ORKReactionTimeStimulusView new];
+        _stimulusView = [[ORKReactionTimeStimulusView alloc] initWithBackgroundColor:self.currentColor];
         _stimulusView.translatesAutoresizingMaskIntoConstraints = NO;
-        _stimulusView.backgroundColor = self.tintColor;
+        _stimulusView.backgroundColor = self.currentColor;
         [self addSubview:_stimulusView];
         [self setUpStimulusViewConstraints];
     }
@@ -78,6 +95,7 @@
 - (void)setStimulusHidden:(BOOL)hidden {
     _stimulusView.hidden = hidden;
 }
+
 
 - (void)setUpStimulusViewConstraints {
     NSMutableArray *constraints = [NSMutableArray array];
@@ -104,6 +122,16 @@
                                                                                views:NSDictionaryOfVariableBindings(_stimulusView)]];
     
     [NSLayoutConstraint activateConstraints:constraints];
+}
+
+
+- (void)changeColor {
+    _colorIndex = arc4random_uniform(_stimulusColors.count);
+    NSLog(@"Color index: %d", _colorIndex);
+}
+
+- (UIColor*)currentColor {
+    return _stimulusColors[_colorIndex];
 }
 
 @end
